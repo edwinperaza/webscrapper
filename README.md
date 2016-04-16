@@ -9,6 +9,7 @@ Websites scraping completed:
 * [ ] Sodimac
 * [ ] Falabella
 * [ ] Lider
+
 ## Acknowledgements
 
 This project uses this library:

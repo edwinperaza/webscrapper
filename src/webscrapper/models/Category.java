@@ -6,7 +6,11 @@
 package webscrapper.models;
 
 public class Category extends RetailEntityModel {
-
+    /* comment 
+    probando fit
+    aaaa
+    akaska
+    */
     private Department categoryParent;
 
     public Category(String name, String url, Department department) {
@@ -21,5 +25,6 @@ public class Category extends RetailEntityModel {
     public void setDepartmentParent(Department categoryParent) {
         this.categoryParent = categoryParent;
     }
-
+    
+    /*nada por aqui*/
 }
