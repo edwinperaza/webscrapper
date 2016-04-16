@@ -1,32 +1,34 @@
-package webscrapper;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.venemprendiendo.pricebot.webscrappers;
 
-import webscrapper.models.Retail;
-import webscrapper.models.Category;
-import webscrapper.models.Item;
-import webscrapper.models.Department;
-import webscrapper.models.SubCategory;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import com.venemprendiendo.pricebot.models.Category;
+import com.venemprendiendo.pricebot.models.Department;
+import com.venemprendiendo.pricebot.models.Item;
+import com.venemprendiendo.pricebot.models.Retail;
+import com.venemprendiendo.pricebot.models.SubCategory;
+import com.venemprendiendo.pricebot.utils.Utils;
 
-public class WebScrapper {
-    static List<String> UrlException = new ArrayList<>();
 
-    public static void main(String[] args) {
-        System.out.println(new Date().toString());
-        Retail sodimac = new Retail("Sodimac", "http://www.sodimac.cl/sodimac-cl/");
-        processCategories(sodimac);
-    }
-
-    public static void processCategories(Retail retail) {
+/**
+ *
+ * @author edwinmperazaduran
+ */
+public class WebScrapperSodimac {
+    static List<String> urlException = new ArrayList<>();
+    
+    public static void executeScrapper(Retail retail) {
         Department department;
         Category category;
         SubCategory subCategory;
@@ -49,7 +51,7 @@ public class WebScrapper {
             int z = 0;
             for (Element elemDepartment : departments) {
                 z++; //Trabajo con la 2da opcion del menu
-                if (z>1){
+                if (z==2){
                     department = new Department(elemDepartment.select("li > a").first().text(), elemDepartment.child(0).attr("href").substring(12), retail);
                     departmentUrl = department.getRetail().getUrl() + department.getUrl();
                     documentDepartment = getHtmlDocument(departmentUrl);
@@ -58,13 +60,13 @@ public class WebScrapper {
                         categories = categoryExtract.get(0).children();
                         for (Element elemCategory : categories){
                             try{ 
-                                Thread.sleep(20000); 
+                                Thread.sleep(10); 
                             }catch(InterruptedException e ){ 
                             System.out.println("Thread Interrupted") ;
                             }
                             category = new Category(elemCategory.select("li > a").first().text(), elemCategory.child(0).attr("href").substring(12), department);
-                            System.out.println("Categories: " + category.getName() + " URL: "+ category.getDepartmentParent().getRetail().getUrl()+category.getUrl());
-                            documentCategory = getHtmlDocument(category.getDepartmentParent().getRetail().getUrl() + category.getUrl());
+                            System.out.println("Categories: " + category.getName() + " URL: "+ category.getDepartment().getRetail().getUrl()+category.getUrl());
+                            documentCategory = getHtmlDocument(category.getDepartment().getRetail().getUrl() + category.getUrl());
                             if (documentCategory != null){
                                 Elements subCategoryExtract = documentCategory.getElementsByClass("jq-accordionGroup");
                                 
@@ -76,23 +78,25 @@ public class WebScrapper {
                                     subCategories = subCategoryExtract.get(0).children();
                                     for (Element elemSubCategory : subCategories){
                                         subCategory = new SubCategory(elemSubCategory.select("li > a").first().text(), elemSubCategory.child(0).attr("href").substring(12) , category);
-                                        System.out.println("---- SubCategory: " + subCategory.getName() + " URL: "+ subCategory.getCategory().getDepartmentParent().getRetail().getUrl()+subCategory.getUrl());
+                                        System.out.println("---- SubCategory: " + subCategory.getName() + " URL: "+ subCategory.getCategory().getDepartment().getRetail().getUrl()+subCategory.getUrl());
                                         items.addAll(processItems(subCategory));
+                                        break;
                                     }
                                 }
                             }
+                            break;
                         }
                     }
                 }
             }
             System.out.println("TOTAL DE PRODUCTOS " + items.size());
             System.out.println(new Date().toString());
-            print(items);
+            Utils.print(items);
         }
 
     }
 
-    public static List<Item> processItems(SubCategory subCategory) {
+    private static List<Item> processItems(SubCategory subCategory) {
         List<Item> items = new ArrayList<>();
         Elements catalog;
         Elements catalogDetails;
@@ -104,7 +108,7 @@ public class WebScrapper {
         String itemName;
         String itemHref;
         
-        String url = subCategory.getCategory().getDepartmentParent().getRetail().getUrl() + subCategory.getUrl();
+        String url = subCategory.getCategory().getDepartment().getRetail().getUrl() + subCategory.getUrl();
         documentSubCategory = getHtmlDocument(url);
        
         if (!(documentSubCategory == null)) {
@@ -158,37 +162,22 @@ public class WebScrapper {
     }
     
 
-    public static Document getHtmlDocument(String url) {
+    private static Document getHtmlDocument(String url) {
 
         Document doc = null;
         try {
             doc = Jsoup.connect(url).userAgent("Mozilla/5.0").timeout(300000).get();
         } catch (IOException ex) {
-            UrlException.add(url);
+            urlException.add(url);
             System.out.println("IO Excepción al obtener el HTML de la página " + url + ex.getMessage());
             ex.printStackTrace();
         } catch (Exception ex) {
-            UrlException.add(url);
+            urlException.add(url);
             System.out.println("Excepción al obtener el HTML de la página " + url + ex.getMessage());
             ex.printStackTrace();
         }
         return doc;
     }
 
-    public static void print(List<Item> items) {
-        FileWriter writer;
-        String fileName = "/Users/edwinmperazaduran/Documents/Test/sodimac"+(new Date())+".txt";
-        
-        try {
-            writer = new FileWriter(fileName);
-            for (Item item : items) {
-                writer.write(item.getSubCategory().getCategory().getDepartmentParent().getName() + " | " + item.getSubCategory().getCategory().getName() + " | " + item.getSubCategory().getName() + " | " + item.getName() + " | " + item.getNormalPrice() + " | " + item.getInternetPrice() + " | " + item.getCardPrice() + " | " + item.getDiscount());
-                writer.append("\n");
-            }
-            writer.close();
-        } catch (IOException ex) {
-            Logger.getLogger(WebScrapper.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
+    
 }

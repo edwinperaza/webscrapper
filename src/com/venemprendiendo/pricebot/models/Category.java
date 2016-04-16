@@ -3,23 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package webscrapper.models;
+package com.venemprendiendo.pricebot.models;
 
 public class Category extends RetailEntityModel {
 
-    private Department categoryParent;
+    private Department category;
 
     public Category(String name, String url, Department department) {
         super(name, url);
-        this.categoryParent = department;
+        this.category = department;
     }
 
-    public Department getDepartmentParent() {
-        return categoryParent;
+    public Department getDepartment() {
+        return category;
     }
 
-    public void setDepartmentParent(Department categoryParent) {
-        this.categoryParent = categoryParent;
+    public void setDepartment(Department categoryParent) {
+        this.category = categoryParent;
     }
 
 }
