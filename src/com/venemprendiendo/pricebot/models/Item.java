@@ -16,6 +16,7 @@ public class Item extends RetailEntityModel {
     private String internetPrice;
     private String cardPrice;
     private String discount;
+    private String urlImage;
 
     public Item(String name, String url, SubCategory subCategory) {
         super(name, url);
@@ -62,4 +63,11 @@ public class Item extends RetailEntityModel {
         this.discount = discount;
     }
 
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
 }
