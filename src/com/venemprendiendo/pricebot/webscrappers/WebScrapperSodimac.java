@@ -71,9 +71,7 @@ public class WebScrapperSodimac {
                                 Elements subCategoryExtract = documentCategory.getElementsByClass("jq-accordionGroup");
                                 
                                 if (subCategoryExtract.isEmpty()){
-                                   /* Cuando una Categoria no tiene subcategoria pero 
-                                      tiene productos para mostrar. Ejemplo: imperdible
-                                    */
+//                                   items.addAll(processItemsCategory(subCategory));
                                 }else{
                                     subCategories = subCategoryExtract.get(0).children();
                                     for (Element elemSubCategory : subCategories){
@@ -100,6 +98,7 @@ public class WebScrapperSodimac {
         List<Item> items = new ArrayList<>();
         Elements catalog;
         Elements catalogDetails;
+        Elements imagesElements;
         Document documentSubCategory;
         Document documentPages;
         int pages;
@@ -107,6 +106,7 @@ public class WebScrapperSodimac {
         Item item;
         String itemName;
         String itemHref;
+        String urlImage = "";
         
         String url = subCategory.getCategory().getDepartment().getRetail().getUrl() + subCategory.getUrl();
         documentSubCategory = getHtmlDocument(url);
@@ -129,27 +129,30 @@ public class WebScrapperSodimac {
                         catalog = documentPages.getElementsByClass("item-list");
                         if (!catalog.isEmpty()){
                             catalogDetails = catalog.get(0).getElementsByClass("informationContainer");
+                            imagesElements = catalog.get(0).getElementsByClass("imageBoxContainer");
+                            if (!imagesElements.isEmpty()){
+                                for (Element image : imagesElements){
+                                    urlImage = image.select("img").attr("data-original");
+                                }
+                            }
+                            
                             if (!catalogDetails.isEmpty()){
-                                for (Element elemt : catalogDetails) { 
-                                    itemName = elemt.getElementsByClass("name").get(0).text();
-                                    itemHref = elemt.select("p > a").get(0).attr("href").substring(12);
+                                for (Element detail : catalogDetails) { 
+                                    itemName = detail.getElementsByClass("name").get(0).text();
+                                    itemHref = detail.select("p > a").get(0).attr("href").substring(12);
                                     item = new Item(itemName, itemHref, subCategory);
-                                    /* Si hay un solo precio se llama Precio Normal
-                                       Pero si hay dos precios:
-                                        El 1ero se llama "Normal:"
-                                        El 2do es precio Internet y es menor*/
-                                    if (elemt.getElementsByClass("jq-price").get(0).text().isEmpty()){
-                                        item.setNormalPrice(elemt.getElementsByClass("jq-price").get(0).text());
+                                    if (detail.getElementsByClass("normal-price").get(0).text().length() == 1){
+                                        item.setNormalPrice(detail.getElementsByClass("jq-price").get(0).text().split("[$CJ]")[1]);
                                     }else{
-                                        item.setNormalPrice(elemt.getElementsByClass("normal-price").get(0).text());
-                                        item.setInternetPrice(elemt.getElementsByClass("jq-price").get(0).text());
+                                        item.setNormalPrice(detail.getElementsByClass("normal-price").get(0).text().split("[$CJ]")[1]);
+                                        item.setInternetPrice(detail.getElementsByClass("jq-price").get(0).text().split("[$CJ]")[1]);
                                     }
-                                    if (elemt.getElementsByClass("cmr-icon").isEmpty()){
+                                    if (detail.getElementsByClass("cmr-icon").isEmpty()){
                                         item.setDiscount("false");
                                     }else{
                                         item.setDiscount("true");
                                     }
-    //                                item.setCardPrice("catalog-product-card-price".equals(label.className()) ? label.text() : item.getCardPrice());
+                                    item.setUrlImage(!urlImage.isEmpty() ? urlImage : "" );
                                     items.add(item);
                                 }
                             }

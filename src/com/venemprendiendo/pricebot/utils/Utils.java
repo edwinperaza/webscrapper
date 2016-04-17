@@ -31,7 +31,7 @@ public class Utils {
             try {
                 writer = new FileWriter(fileName);
                 for (Item item : items) {
-                    writer.write(item.getSubCategory().getCategory().getDepartment().getName() + " | " + item.getSubCategory().getCategory().getName() + " | " + item.getSubCategory().getName() + " | " + item.getName() + " | " + item.getNormalPrice() + " | " + item.getInternetPrice() + " | " + item.getCardPrice() + " | " + item.getDiscount());
+                    writer.write(item.getSubCategory().getCategory().getDepartment().getName() + " | " + item.getSubCategory().getCategory().getName() + " | " + item.getSubCategory().getName() + " | " + item.getName() + " | " + item.getNormalPrice() + " | " + item.getInternetPrice() + " | " + item.getCardPrice() + " | " + item.getDiscount() + " | " + item.getUrlImage());
                     writer.append("\n");
                 }
                 writer.close();
