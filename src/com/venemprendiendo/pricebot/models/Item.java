@@ -17,7 +17,11 @@ public class Item extends RetailEntityModel {
     private String cardPrice;
     private String discount;
     private String urlImage;
-
+    private String brand;
+    private String SKU;
+    private String date;
+    private String isExclusive;
+    
     public Item(String name, String url, SubCategory subCategory) {
         super(name, url);
         this.subCategory = subCategory;
@@ -70,4 +74,37 @@ public class Item extends RetailEntityModel {
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
     }
+
+    public String getSKU() {
+        return SKU;
+    }
+
+    public void setSKU(String SKU) {
+        this.SKU = SKU;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getIsExclusive() {
+        return isExclusive;
+    }
+
+    public void setIsExclusive(String isExclusive) {
+        this.isExclusive = isExclusive;
+    }
+    
 }
