@@ -48,10 +48,7 @@ public class WebScrapperSodimac {
             departmentExtract = documentRetail.getElementsByClass("sub-nav");
             departments = departmentExtract.get(0).children();
 
-            int z = 0;
             for (Element elemDepartment : departments) {
-                z++; //Trabajo con la 2da opcion del menu
-                if (z==2){
                     department = new Department(elemDepartment.select("li > a").first().text(), elemDepartment.child(0).attr("href").substring(12), retail);
                     departmentUrl = department.getRetail().getUrl() + department.getUrl();
                     documentDepartment = getHtmlDocument(departmentUrl);
@@ -78,14 +75,15 @@ public class WebScrapperSodimac {
                                         subCategory = new SubCategory(elemSubCategory.select("li > a").first().text(), elemSubCategory.child(0).attr("href").substring(12) , category);
                                         System.out.println("---- SubCategory: " + subCategory.getName() + " URL: "+ subCategory.getCategory().getDepartment().getRetail().getUrl()+subCategory.getUrl());
                                         items.addAll(processItems(subCategory));
-                                        break;
+//                                        break;
                                     }
                                 }
                             }
-                            break;
+//                            break;
                         }
+//                        break;
                     }
-                }
+                
             }
             System.out.println("TOTAL DE PRODUCTOS " + items.size());
             System.out.println(new Date().toString());
