@@ -57,7 +57,7 @@ public class WebScrapperSodimac {
                         categories = categoryExtract.get(0).children();
                         for (Element elemCategory : categories){
                             try{ 
-                                Thread.sleep(10); 
+                                Thread.sleep(10000); 
                             }catch(InterruptedException e ){ 
                             System.out.println("Thread Interrupted") ;
                             }
