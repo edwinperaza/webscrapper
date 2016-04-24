@@ -43,7 +43,7 @@ public class WebScrapperSodimac {
         Document documentDepartment;
         Document documentCategory;
         
-        Document documentRetail = getHtmlDocument(retail.getUrl());
+        Document documentRetail = getHtmlDocument(retail.getUrl());//
         if (!(documentRetail == null && documentRetail.getElementsByClass("sub-nav").isEmpty())){
             
             departmentExtract = documentRetail.getElementsByClass("sub-nav");
