@@ -53,7 +53,7 @@ public class WebScrapperFalabella extends Scrapper {
                 for (SubCategory subCategory : subCategories) {
                     System.out.println(subCategory.getName());
                     System.out.println(subCategory.getUrl());
-                    items = processItems(subCategory);
+                    items.addAll(processItems(subCategory));
                     //break;
                 }
 

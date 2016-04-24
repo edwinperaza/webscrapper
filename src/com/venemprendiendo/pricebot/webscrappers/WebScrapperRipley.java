@@ -47,11 +47,11 @@ public class WebScrapperRipley extends Scrapper{
                     subCategory = new SubCategory(sub.text(), sub.attr("href"), category);
                     System.out.println(subCategory.getName() + "  " + subCategory.getUrl());
                     items.addAll(processItems(subCategory));
-                    break;
+                    //break;
                 }
-                break;
+                //break;
             }
-            break;//Solo trabajare con TV y Audio por ahora.
+            //break;//Solo trabajare con TV y Audio por ahora.
         }
         System.out.println("TOTAL DE PRODUCTOS " + items.size());
         System.out.println("TOTAL DE URLs con error: " + wrongUrls.size());

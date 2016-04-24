@@ -11,9 +11,9 @@ public class WebScrapper {
         //      WebScrapperSodimac.executeScrapper(sodimac);
 
 //        
-//        Retail ripley = new Retail("Ripley", "http://simple.ripley.cl");
-//        new WebScrapperRipley().executeScrapper(ripley);
-        Retail falabella = new Retail("Falabella", "http://www.falabella.com/falabella-cl/");
-        new WebScrapperFalabella().executeScrapper(falabella);
+        Retail ripley = new Retail("Ripley", "http://simple.ripley.cl");
+        new WebScrapperRipley().executeScrapper(ripley);
+        //Retail falabella = new Retail("Falabella", "http://www.falabella.com/falabella-cl/");
+        //new WebScrapperFalabella().executeScrapper(falabella);
     }
 }
