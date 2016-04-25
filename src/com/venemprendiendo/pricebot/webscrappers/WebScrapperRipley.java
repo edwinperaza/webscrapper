@@ -1,5 +1,6 @@
 package com.venemprendiendo.pricebot.webscrappers;
 
+import com.venemprendiendo.pricebot.exceptions.IncompleteConfigurationException;
 import com.venemprendiendo.pricebot.models.Category;
 import com.venemprendiendo.pricebot.models.Department;
 import com.venemprendiendo.pricebot.models.Item;
@@ -17,12 +18,14 @@ import org.jsoup.select.Elements;
 
 public class WebScrapperRipley extends Scrapper{
 
-    public WebScrapperRipley() {
-        setTimeout(300000);
+    public WebScrapperRipley(int timeout, String destinationPath) {
+        setTimeout(timeout);
+        setDestinationPath(destinationPath);
+        setRetail( new Retail("Ripley", "http://simple.ripley.cl"));
     }
     
     @Override
-    public void executeScrapper(Retail retail) {
+    public void executeScrapper() throws IncompleteConfigurationException {
         Document document = getHtmlDocumentWithRetry(retail.getUrl());
         Elements departmentExtract = document.getElementsByClass("main-categories");
         Elements departments = departmentExtract.get(0).children();
@@ -59,7 +62,7 @@ public class WebScrapperRipley extends Scrapper{
             System.out.println(wrong);
         }
         System.out.println(new Date().toString());
-        Utils.print(items);
+        Utils.print(items, getDestinationPath());
         
     }
     

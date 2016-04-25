@@ -5,6 +5,7 @@
  */
 package com.venemprendiendo.pricebot.utils;
 
+import com.venemprendiendo.pricebot.exceptions.IncompleteConfigurationException;
 import com.venemprendiendo.pricebot.models.Item;
 import com.venemprendiendo.pricebot.webscrappers.WebScrapper;
 import java.io.FileWriter;
@@ -18,13 +19,12 @@ import java.util.logging.Logger;
 
 public class Utils {
     
-    public static void print(List<Item> items) {
+    public static void print(List<Item> items, String destinationPath) throws IncompleteConfigurationException {
+        if(destinationPath == null) throw new IncompleteConfigurationException(" El parametro destinationPath no puede ser nulo.");
         if (items != null && !items.isEmpty()){
             FileWriter writer;
             String retailName = items.get(0).getSubCategory().getCategory().getDepartment().getRetail().getName();
-            
-            String fileName = "/home/leoromerbric/"+retailName+"_"+getFormatedDate(new Date(), "dd_MM_yyy_HH_mm")+".txt";
-
+            String fileName = destinationPath +retailName+"_"+getFormatedDate(new Date(), "dd_MM_yyy_HH_mm")+".txt";
             try {
                 writer = new FileWriter(fileName);
                 writer.write("site  | department  | department-url  |  category  |  category-url  |  subcategory  |  subcategory-url  |  item-name  |  item-url  |  SKU  |  brand  |  price-normal  |  price-sale  |  price-internet  |  image-url  |  date-time  |  isExclusive");

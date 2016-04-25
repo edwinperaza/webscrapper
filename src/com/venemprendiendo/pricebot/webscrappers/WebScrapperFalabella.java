@@ -1,5 +1,6 @@
 package com.venemprendiendo.pricebot.webscrappers;
 
+import com.venemprendiendo.pricebot.exceptions.IncompleteConfigurationException;
 import com.venemprendiendo.pricebot.models.Category;
 import com.venemprendiendo.pricebot.models.Department;
 import com.venemprendiendo.pricebot.models.Item;
@@ -7,7 +8,6 @@ import com.venemprendiendo.pricebot.models.Retail;
 import com.venemprendiendo.pricebot.models.Scrapper;
 import com.venemprendiendo.pricebot.models.SubCategory;
 import com.venemprendiendo.pricebot.utils.Utils;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,12 +18,14 @@ import org.jsoup.select.Elements;
 public class WebScrapperFalabella extends Scrapper {
 
     
-    public WebScrapperFalabella() {
-        setTimeout(300000);
+    public WebScrapperFalabella(int timeout, String destinationPath) {
+        setTimeout(timeout);
+        setDestinationPath(destinationPath);
+        setRetail(new Retail("Falabella", "http://www.falabella.com/falabella-cl/"));
     }
 
     @Override
-    public void executeScrapper(Retail retail) {
+    public void executeScrapper() throws IncompleteConfigurationException{
         Document document = getHtmlDocumentWithRetry(retail.getUrl());
         Document documentCategories;
         Elements departmentExtract = document.getElementsByClass("menu_bg_off");
@@ -67,7 +69,7 @@ public class WebScrapperFalabella extends Scrapper {
             System.out.println(wrong);
         }
         System.out.println(new Date().toString());
-        Utils.print(items);
+        Utils.print(items, getDestinationPath());
 
     }
 
