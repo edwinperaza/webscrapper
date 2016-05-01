@@ -6,6 +6,7 @@
             <name>WebScrapper</name>
             <source-roots>
                 <root id="src.dir"/>
+                <root id="src.thirdparty_libs.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>
