@@ -4,21 +4,18 @@ This is a Java  application for scraping data from several Websites in Chile.
 
 Websites scraping completed:
 
-* [ ] Ripley
+* [x] Ripley
 * [ ] Paris
-* [ ] Sodimac
-* [ ] Falabella
+* [x] Sodimac
+* [x] Falabella
 * [ ] Lider
+
 ## Acknowledgements
 
 This project uses this library:
 
 * [Jsoup](http://jsoup.org/)
 
-## Authors:
+## Author:
 
 1. Edwin Peraza
-2. Leonel Romero 
-3. Pedro Madrid
-4. Jhosman Frias
-

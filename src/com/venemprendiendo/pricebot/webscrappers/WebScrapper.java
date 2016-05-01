@@ -16,7 +16,7 @@ public class WebScrapper {
             case "falabella": 
                 return new WebScrapperFalabella(timeout,destinationPath);
             case "sodimac": 
-                return null;
+                return new WebScrapperSodimac(timeout,destinationPath);
             case "paris": 
                 return null;
             default :
@@ -31,7 +31,7 @@ public class WebScrapper {
     
     public static void main(String[] args) {
         try{
-            executeExtraction("Ripley",30000,"/home/leonel");
+            executeExtraction("Sodimac",30000,"/Users/edwinmperazaduran/Documents/Test/");
         }catch(Exception ex){
         ex.printStackTrace();
         }
