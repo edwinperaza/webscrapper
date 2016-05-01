@@ -1,19 +1,39 @@
 package com.venemprendiendo.pricebot.webscrappers;
 
-import com.venemprendiendo.pricebot.models.Retail;
+import com.venemprendiendo.pricebot.exceptions.IncompleteConfigurationException;
+import com.venemprendiendo.pricebot.exceptions.NullParameterException;
+import com.venemprendiendo.pricebot.models.Scrapper;
 import java.util.Date;
 
 public class WebScrapper {
-
-    public static void main(String[] args) {
+    
+    private static Scrapper getScrapper(String retail, int timeout, String destinationPath) throws NullParameterException{
+        if(retail == null)
+            throw new NullParameterException("El parametro retail no puede ser nulo.");
+        switch(retail.toLowerCase()){
+            case "ripley": 
+                return new WebScrapperRipley(timeout,destinationPath);
+            case "falabella": 
+                return new WebScrapperFalabella(timeout,destinationPath);
+            case "sodimac": 
+                return null;
+            case "paris": 
+                return null;
+            default :
+                return null;
+        }
+        
+    }
+    public static void executeExtraction(String retail, int timeout, String destinationPath) throws NullParameterException, IncompleteConfigurationException{
         System.out.println(new Date().toString());
-//        Retail sodimac = new Retail("Sodimac", "http://www.sodimac.cl/sodimac-cl/");
-        //      WebScrapperSodimac.executeScrapper(sodimac);
-
-//        
-        Retail ripley = new Retail("Ripley", "http://simple.ripley.cl");
-        new WebScrapperRipley().executeScrapper(ripley);
-        //Retail falabella = new Retail("Falabella", "http://www.falabella.com/falabella-cl/");
-        //new WebScrapperFalabella().executeScrapper(falabella);
+        getScrapper(retail, timeout, destinationPath).executeScrapper();
+    }
+    
+    public static void main(String[] args) {
+        try{
+            executeExtraction("Ripley",30000,"/home/leonel");
+        }catch(Exception ex){
+        ex.printStackTrace();
+        }
     }
 }

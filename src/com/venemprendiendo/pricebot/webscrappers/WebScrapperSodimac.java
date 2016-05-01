@@ -6,6 +6,7 @@
  */
 package com.venemprendiendo.pricebot.webscrappers;
 
+import com.venemprendiendo.pricebot.exceptions.IncompleteConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +30,7 @@ import com.venemprendiendo.pricebot.utils.Utils;
 public class WebScrapperSodimac {
     static List<String> urlException = new ArrayList<>();
     
-    public static void executeScrapper(Retail retail) {
+    public static void executeScrapper(Retail retail)  throws IncompleteConfigurationException{
         Department department;
         Category category;
         SubCategory subCategory;
@@ -88,7 +89,7 @@ public class WebScrapperSodimac {
             }
             System.out.println("TOTAL DE PRODUCTOS " + items.size());
             System.out.println(new Date().toString());
-            Utils.print(items);
+            Utils.print(items, "aqui va getDestinationPath()");
         }
 
     }
